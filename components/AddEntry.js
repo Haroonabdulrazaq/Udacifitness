@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import { Text, View } from "react-native";
 import { getMetricMetaInfo } from '../utils/helpers';
+import UdaciSlidder from './UdaciSlidder';
+import UdaciStepper from './UdaciStepper';
+import DateHeader from './DateHeader'
 // import { getMetricMetaInfo } from "../utils/helpers";
 
 class AddEntry extends Component {
@@ -11,7 +14,7 @@ class AddEntry extends Component {
     sleep: 0,
     eat: 0,
   }
-  increment =(metrics)=> {
+  increment =(metric)=> {
     const { max, step } = getMetricMetaInfo(metric);
     this.setState((prevState)=>{
       const count = prevState[metric] + step
@@ -22,7 +25,7 @@ class AddEntry extends Component {
     })
   }
 
-  decrement =(metrics)=> {
+  decrement =(metric)=> {
     const { step } = getMetricMetaInfo(metric);
     this.setState((prevState)=>{
       const count = prevState[metric] - step
@@ -32,20 +35,47 @@ class AddEntry extends Component {
       } 
     })
   }
+
   slide =(metric, value)=> {
-    this.setState((prevState)=>({
+    this.setState(()=>({
       [metric]: value,
     }))
   }
+
   render() {
+    const metaInfo = getMetricMetaInfo();
+    console.log('|||||',metaInfo);
     return (
       <View>
-       {getMetricMetaInfo('bike').getIcon()}
+        <DateHeader date={(new Date()).toLocaleDateString()}/>
+       {Object.keys(metaInfo).map((key)=>{
+        const {getIcon, type, ...rest} = metaInfo[key];
+        const value = this.state[key]; 
+        return (
+          <View key={key}>
+            {getIcon()}
+            {
+              type === 'slider'
+              ?
+              <UdaciSlidder
+                value={value}
+                onChange={(value) => this.slide(key, value)}
+                {...rest}
+            />
+              :<UdaciStepper
+                value={value}
+                onIncrement={() => this.increment(key)}
+                onDecrement={() => this.decrement(key)}
+                {...rest}
+            />
+            }
+          </View>
+        )
+      })}
       </View>
     )
   }
 }
 
+
 export default AddEntry;
-
-

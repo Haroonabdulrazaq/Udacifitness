@@ -59,7 +59,7 @@ export function getMetricMetaInfo(metric){
         return (
           <View>
             <MaterialIcons
-              name='direction-run'
+              name='directions-run'
               color='black'
               size={35}
             />
