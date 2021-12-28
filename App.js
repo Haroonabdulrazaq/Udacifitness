@@ -9,15 +9,17 @@ import {View, Text,
 
 class App extends Component {
   handlePress =()=> {
-    alert('Hello!');
+    // alert('Hello!');
   }
   render() {
     return (
       <View style={styles.container} >
         {/* <AddEntry /> */}
-        <TouchableOpacity onPress={this.handlePress} underlayColor='#D4271b' style={styles.btn} >
-          <Text style={styles.btnText}>Touchable HIghlight</Text>
-        </TouchableOpacity>
+        <TouchableNativeFeedback 
+          background={TouchableNativeFeedback.SelectableBackground()}
+          onPress={this.handlePress}  >
+          <View style={styles.btn}><Text style={styles.btnText}>Touchable HIghlight</Text></View>
+        </TouchableNativeFeedback>
       </View>
     );
   }
