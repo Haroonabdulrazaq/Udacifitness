@@ -5,7 +5,7 @@ import {View, Text,
   TouchableHighlight,
   TouchableNativeFeedback,
   TouchableWithoutFeedback,} from 'react-native'
-// import AddEntry from './components/AddEntry';
+import AddEntry from './components/AddEntry';
 
 class App extends Component {
   handlePress =()=> {
@@ -14,12 +14,11 @@ class App extends Component {
   render() {
     return (
       <View style={styles.container} >
-        {/* <AddEntry /> */}
-        <TouchableNativeFeedback 
-          background={TouchableNativeFeedback.SelectableBackground()}
+        <AddEntry />
+        {/* <TouchableOpacity
           onPress={this.handlePress}  >
           <View style={styles.btn}><Text style={styles.btnText}>Touchable HIghlight</Text></View>
-        </TouchableNativeFeedback>
+        </TouchableOpacity> */}
       </View>
     );
   }
