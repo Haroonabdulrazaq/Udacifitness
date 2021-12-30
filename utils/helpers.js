@@ -52,7 +52,7 @@ export function getMetricMetaInfo(metric){
     run: {
       displayName: 'Run',
       max: '50',
-      steps: '1',
+      steps: 1,
       unit: 'miles',
       type: 'stepper',
       getIcon(){
@@ -70,7 +70,7 @@ export function getMetricMetaInfo(metric){
     bike: {
       displayName: 'Bike',
       max: '100',
-      steps: '1',
+      steps: 1,
       unit: 'miles',
       type: 'stepper',
       getIcon(){
@@ -88,7 +88,7 @@ export function getMetricMetaInfo(metric){
     swim: {
       displayName: 'Swim',
       max: '9900',
-      steps: '1',
+      steps: 1,
       unit: 'meters',
       type: 'stepper',
       getIcon(){
@@ -106,7 +106,7 @@ export function getMetricMetaInfo(metric){
     sleep: {
       displayName: 'Sleep',
       max: '24',
-      steps: '1',
+      steps: 1,
       unit: 'hours',
       type: 'slider',
       getIcon(){
@@ -124,7 +124,7 @@ export function getMetricMetaInfo(metric){
     eat: {
       displayName: 'Sleep',
       max: '10',
-      steps: '1',
+      steps: 1,
       unit: 'rating',
       type: 'slider',
       getIcon(){

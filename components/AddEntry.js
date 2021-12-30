@@ -3,8 +3,11 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { getMetricMetaInfo, timeToString } from '../utils/helpers';
 import UdaciSlidder from './UdaciSlidder';
 import UdaciStepper from './UdaciStepper';
-import DateHeader from './DateHeader'
-// import { getMetricMetaInfo } from "../utils/helpers";
+import TextButton from './TextButton';
+import DateHeader from './DateHeader';
+import { Ionicons } from '@expo/vector-icons';
+import {submitEntry, removeEntry } from '../utils/api';
+
 
 function SubmitBtn({onPress}){
   return(
@@ -18,16 +21,18 @@ function SubmitBtn({onPress}){
 
 class AddEntry extends Component {
   state = {
-    run: 10,
-    bike: 10,
+    run: 0,
+    bike: 0,
     swim: 0,
     sleep: 0,
     eat: 0,
   }
+
   increment =(metric)=> {
-    const { max, step } = getMetricMetaInfo(metric);
+    const { max, steps } = getMetricMetaInfo(metric);
     this.setState((prevState)=>{
-      const count = prevState[metric] + step
+      const count = prevState[metric] + steps
+      console.log('I am here||', count);
       return {
         ...prevState,
         [metric]: count > max? max : count
@@ -65,13 +70,32 @@ class AddEntry extends Component {
 
     //Update Redux
     //Save To Db:
+    submitEntry({key, entry})
     // Navigate To Home
     // Clear Local Notification
+  }
+  reset=()=>{
+    const key = timeToString();
+    // alert('Its reset')
+    //Saveing to AsynStorage
+    removeEntry(key)
+
   }
 
   render() {
     const metaInfo = getMetricMetaInfo();
     console.log('|||||',metaInfo);
+    if(this.props.alreadyLogged) {
+      return (
+        <View>
+          <Ionicons name='ios-happy-outline' size={100} />
+          <Text>You already logged your information for today</Text>
+          <TextButton onPress={this.reset}>
+            <Text>Reset</Text>
+          </TextButton>
+        </View>
+      )
+    }
     return (
       <View>
         <DateHeader date={(new Date()).toLocaleDateString()}/>
