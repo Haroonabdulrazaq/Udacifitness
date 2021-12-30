@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import { Text, View, TouchableOpacity } from "react-native";
-import { getMetricMetaInfo, timeToString } from '../utils/helpers';
+import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils/helpers';
 import UdaciSlidder from './UdaciSlidder';
 import UdaciStepper from './UdaciStepper';
 import TextButton from './TextButton';
 import DateHeader from './DateHeader';
 import { Ionicons } from '@expo/vector-icons';
 import {submitEntry, removeEntry } from '../utils/api';
+import { connect } from 'react-redux';
+import { addEntry } from '../actions';
 
 
 function SubmitBtn({onPress}){
@@ -32,7 +34,6 @@ class AddEntry extends Component {
     const { max, steps } = getMetricMetaInfo(metric);
     this.setState((prevState)=>{
       const count = prevState[metric] + steps
-      console.log('I am here||', count);
       return {
         ...prevState,
         [metric]: count > max? max : count
@@ -41,9 +42,9 @@ class AddEntry extends Component {
   }
 
   decrement =(metric)=> {
-    const { step } = getMetricMetaInfo(metric);
+    const { steps } = getMetricMetaInfo(metric);
     this.setState((prevState)=>{
-      const count = prevState[metric] - step
+      const count = prevState[metric] - steps
       return {
         ...prevState,
         [metric]: count < 0? 0 : count
@@ -70,6 +71,10 @@ class AddEntry extends Component {
 
     //Update Redux
     //Save To Db:
+    this.props.dispatch(addEntry({
+      [key]: entry,
+    }))
+
     submitEntry({key, entry})
     // Navigate To Home
     // Clear Local Notification
@@ -78,13 +83,14 @@ class AddEntry extends Component {
     const key = timeToString();
     // alert('Its reset')
     //Saveing to AsynStorage
-    removeEntry(key)
-
+    this.props.dispatch(removeEntry({
+      [key]: getDailyReminderValue()
+    }))
   }
 
   render() {
     const metaInfo = getMetricMetaInfo();
-    console.log('|||||',metaInfo);
+
     if(this.props.alreadyLogged) {
       return (
         <View>
@@ -130,5 +136,12 @@ class AddEntry extends Component {
   }
 }
 
+function mapStateToProp(state){
+  const key = timeToString();
 
-export default AddEntry;
+  return {
+    alreadyLogged: state[key] && state[key].today === 'undefined'
+  }
+}
+
+export default connect(mapStateToProp)(AddEntry);

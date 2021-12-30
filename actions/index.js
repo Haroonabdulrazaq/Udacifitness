@@ -8,7 +8,7 @@ export function receiveEntry(entires){
   }
 }
 
-export function addEntry(entiry){
+export function addEntry(entry){
   return {
     type: ADD_ENTRY,
     entires

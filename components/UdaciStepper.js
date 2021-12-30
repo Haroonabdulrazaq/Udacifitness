@@ -3,7 +3,6 @@ import {View, Text, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
 const UdaciStepper = ({max, unit, value, onIncrement, onDecrement}) => {
-  console.log(value);
   return (
     <View>
       <View>

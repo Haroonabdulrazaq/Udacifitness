@@ -4,22 +4,21 @@ import {View, Text,
   TouchableOpacity,
   TouchableHighlight,
   TouchableNativeFeedback,
-  TouchableWithoutFeedback,} from 'react-native'
+  TouchableWithoutFeedback,} from 'react-native';
+  import { createStore } from 'redux';
+  import { Provider } from 'react-redux';
+  import reducer from './reducers';
 import AddEntry from './components/AddEntry';
 
 class App extends Component {
-  handlePress =()=> {
-    // alert('Hello!');
-  }
   render() {
+    const store = createStore(reducer);
     return (
-      <View style={styles.container} >
-        <AddEntry />
-        {/* <TouchableOpacity
-          onPress={this.handlePress}  >
-          <View style={styles.btn}><Text style={styles.btnText}>Touchable HIghlight</Text></View>
-        </TouchableOpacity> */}
-      </View>
+      <Provider store={store}>
+        <View style={styles.container} >
+          <AddEntry />
+        </View>
+      </Provider>
     );
   }
 }
