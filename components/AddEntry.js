@@ -20,7 +20,6 @@ function SubmitBtn({onPress}){
 }
 
 
-
 class AddEntry extends Component {
   state = {
     run: 0,
@@ -60,6 +59,8 @@ class AddEntry extends Component {
   submit=()=>{
     const key = timeToString();
     const entry = this.state;
+    console.log('I am a Key',key);
+    console.log('I am a an Entry',entry);
 
     this.setState(()=>({
       run: 0,
@@ -71,9 +72,9 @@ class AddEntry extends Component {
 
     //Update Redux
     //Save To Db:
-    this.props.dispatch(addEntry({
-      [key]: entry,
-    }))
+    // this.props.dispatch(addEntry({
+    //   [key]: entry,
+    // }))
 
     submitEntry({key, entry})
     // Navigate To Home
@@ -138,9 +139,9 @@ class AddEntry extends Component {
 
 function mapStateToProp(state){
   const key = timeToString();
-
+  console.log('I am in mapStateToProps', state[key]);
   return {
-    alreadyLogged: state[key] && state[key].today === 'undefined'
+    alreadyLogged: state[key] && typeof state[key].today === 'undefined'
   }
 }
 

@@ -15,7 +15,7 @@ class App extends Component {
     const store = createStore(reducer);
     return (
       <Provider store={store}>
-        <View style={styles.container} >
+        <View style={{flex: 1}} >
           <AddEntry />
         </View>
       </Provider>
@@ -24,28 +24,28 @@ class App extends Component {
 }
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginLeft: 10,
-    marginRight: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btn: {
-    backgroundColor: '#E53224',
-    padding: 10,
-    paddingLeft: 50,
-    paddingRight: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
-  },
-  btnText: {
-    color: '#fff',
-  }
-})
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     marginLeft: 10,
+//     marginRight: 10,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+//   btn: {
+//     backgroundColor: '#E53224',
+//     padding: 10,
+//     paddingLeft: 50,
+//     paddingRight: 50,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     borderRadius: 5,
+//   },
+//   btnText: {
+//     color: '#fff',
+//   }
+// })
 
 
-export default App
+export default App;
 
