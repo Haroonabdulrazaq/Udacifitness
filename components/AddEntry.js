@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, Platform, StyleSheet } from "react-native";
 import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils/helpers';
 import UdaciSlidder from './UdaciSlidder';
 import UdaciStepper from './UdaciStepper';
@@ -7,14 +7,20 @@ import TextButton from './TextButton';
 import DateHeader from './DateHeader';
 import { Ionicons } from '@expo/vector-icons';
 import {submitEntry, removeEntry } from '../utils/api';
+import { purple } from '../utils/colors';
 import { connect } from 'react-redux';
 import { addEntry } from '../actions';
+import { white } from '../utils/colors';
 
 
 function SubmitBtn({onPress}){
   return(
-    <TouchableOpacity onPress={onPress}>
-      <Text>Submit</Text>
+    <TouchableOpacity
+    style={Platform.OS === 'ios'? styles.iosSubmitBtn : styles.andriodSubmitBtn}
+    onPress={onPress}>
+      <Text 
+      style={styles.submitBtnText}
+      >Submit</Text>
     </TouchableOpacity>
   )
 }
@@ -59,8 +65,9 @@ class AddEntry extends Component {
   submit=()=>{
     const key = timeToString();
     const entry = this.state;
-    console.log('I am a Key',key);
-    console.log('I am a an Entry',entry);
+    this.props.dispatch(addEntry({
+      [key]: entry
+    }))   
 
     this.setState(()=>({
       run: 0,
@@ -77,16 +84,21 @@ class AddEntry extends Component {
     // }))
 
     submitEntry({key, entry})
+
     // Navigate To Home
     // Clear Local Notification
   }
+
   reset=()=>{
+    console.log('removing entry');
     const key = timeToString();
     // alert('Its reset')
     //Saveing to AsynStorage
-    this.props.dispatch(removeEntry({
+    this.props.dispatch(addEntry({
       [key]: getDailyReminderValue()
     }))
+
+    removeEntry(key)
   }
 
   render() {
@@ -94,24 +106,24 @@ class AddEntry extends Component {
 
     if(this.props.alreadyLogged) {
       return (
-        <View>
-          <Ionicons name='ios-happy-outline' size={100} />
+        <View style={styles.center}>
+          <Ionicons name={Platform.OS== 'ios'? 'ios-happy-outline': 'md-happy-outline'} size={100} />
           <Text>You already logged your information for today</Text>
-          <TextButton onPress={this.reset}>
+          <TextButton onPress={this.reset} style={{padding: 5}}>
             <Text>Reset</Text>
           </TextButton>
         </View>
       )
     }
     return (
-      <View>
+      <View style={styles.container}>
         <DateHeader date={(new Date()).toLocaleDateString()}/>
         <Text>{JSON.stringify(this.state)}</Text>
        {Object.keys(metaInfo).map((key)=>{
         const {getIcon, type, ...rest} = metaInfo[key];
         const value = this.state[key]; 
         return (
-          <View key={key}>
+          <View key={key} style={styles.row}>
             {getIcon()}
             {
               type === 'slider'
@@ -136,6 +148,52 @@ class AddEntry extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: white,
+  },
+  row:{
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iosSubmitBtn: {
+    backgroundColor: purple,
+    padding: 10,
+    borderRadius: 7,
+    height: 45,
+    marginLeft: 40,
+    marginRight: 40,
+  },
+  andriodSubmitBtn: {
+    backgroundColor: purple,
+    padding: 10,
+    paddingLeft:30,
+    paddingRight:30,
+    borderRadius: 2,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 45,
+    marginLeft: 40,
+    marginRight: 40,
+  },
+  submitBtnText:{
+    color: white,
+    fontSize: 22,
+    alignItems: 'center'
+  },
+  center: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+
+})
+
 
 function mapStateToProp(state){
   const key = timeToString();
