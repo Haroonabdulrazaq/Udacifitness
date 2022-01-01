@@ -8,7 +8,8 @@ import {View, Text,
   import { createStore } from 'redux';
   import { Provider } from 'react-redux';
   import reducer from './reducers';
-import AddEntry from './components/AddEntry';
+// import AddEntry from './components/AddEntry';
+import History from './components/History';
 
 class App extends Component {
   render() {
@@ -16,7 +17,8 @@ class App extends Component {
     return (
       <Provider store={store}>
         <View style={{flex: 1}} >
-          <AddEntry />
+          {/* <AddEntry /> */}
+          <History />
         </View>
       </Provider>
     );
